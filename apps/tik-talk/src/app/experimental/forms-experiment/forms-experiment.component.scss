@@ -1,0 +1,30 @@
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 12px;
+  margin-bottom: 24px;
+}
+:host {
+  display: grid;
+  place-items: center;
+  height: 100dvh;
+}
+form {
+  max-width: 600px;
+}
+.tt-input.ng-invalid.ng-touched {
+  border: 1px solid tomato;
+}
+
+.two-columns {
+  display: grid;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 12px;
+}
+
+.tt-input::-webkit-calendar-picker-indicator {
+  background: var(--primary-color);
+  cursor: pointer;
+}
