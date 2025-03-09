@@ -1,8 +1,8 @@
-import {Component, inject, OnDestroy, OnInit} from '@angular/core';
-import { AvatarUploadComponent } from '../../ui';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { debounceTime, startWith, switchMap } from 'rxjs';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
+import {AvatarUploadComponent} from '../../ui';
+import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
+import {debounceTime, first, startWith} from 'rxjs';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {profileActions, selectFilledFilters} from '../../data';
 import {Store} from "@ngrx/store";
 
@@ -12,6 +12,7 @@ import {Store} from "@ngrx/store";
   imports: [AvatarUploadComponent, ReactiveFormsModule],
   templateUrl: './profile-filters.component.html',
   styleUrl: './profile-filters.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProfileFiltersComponent {
   fb = inject(FormBuilder);
@@ -21,22 +22,21 @@ export class ProfileFiltersComponent {
     lastName: [''],
     stack: [''],
   });
+  filters = {};
+
   constructor() {
+    this.store.select(selectFilledFilters).pipe(first()).subscribe(filledFilters => {
+      this.filters = filledFilters;
+      this.searchForm.patchValue(this.filters);
+    });
     this.searchForm.valueChanges
       .pipe(
-        startWith({}),
+        startWith(this.filters),
         debounceTime(300),
         takeUntilDestroyed()
       )
-      .subscribe(formValue =>{
-        this.store.dispatch(profileActions.filterEvents({filters: formValue})),
-          console.log(formValue)
-      });
-  }
-
-  ngOnInit() {
-    this.store.select(selectFilledFilters).subscribe(filters => {
-        this.searchForm.patchValue(filters);
+      .subscribe(formValue => {
+        this.store.dispatch(profileActions.filterEvents({filters: formValue}));
       });
   }
 }

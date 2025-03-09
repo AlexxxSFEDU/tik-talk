@@ -1,4 +1,9 @@
 :host {
+  svg
+  {
+    width: 43px;
+    height: 43px;
+  }
   display: grid;
   padding: 16px;
   background: var(--dark-color);

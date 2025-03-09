@@ -1,18 +1,10 @@
-import {
-  Component,
-  EventEmitter,
-  HostBinding,
-  inject,
-  input,
-  Output,
-  Renderer2,
-} from '@angular/core';
-import { NgIf } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { firstValueFrom } from 'rxjs';
-import {PostService} from "../../data";
+import {Component, EventEmitter, HostBinding, inject, input, Output, Renderer2,} from '@angular/core';
+import {NgIf} from '@angular/common';
+import {FormsModule} from '@angular/forms';
 import {AvatarCircleComponent, SvgComponent} from "@tt/common-ui";
-import {GlobalStoreService} from "@tt/shared";
+import {GlobalStoreService} from "@tt/data-access";
+import {Store} from "@ngrx/store";
+import {postActions} from "../../data/store";
 
 
 @Component({
@@ -23,15 +15,17 @@ import {GlobalStoreService} from "@tt/shared";
   styleUrl: './post-input.component.scss',
 })
 export class PostInputComponent {
+  r2 = inject(Renderer2);
+  profile = inject(GlobalStoreService).me;
+  store = inject(Store)
+
   isCommentInput = input(false);
   postId = input<number>(0);
-  r2 = inject(Renderer2);
-  postService = inject(PostService);
-  profile = inject(GlobalStoreService).me;
 
   postText = ' ';
 
   @Output() created = new EventEmitter();
+
   @HostBinding('class.comment')
   get isComment() {
     return this.isCommentInput();
@@ -47,24 +41,24 @@ export class PostInputComponent {
     if (!this.postText) return;
 
     if (this.isCommentInput()) {
-      firstValueFrom(
-        this.postService.createComment({
+      this.store.dispatch(postActions.createComment({
+        commentContent: {
           text: this.postText,
           authorId: this.profile()!.id,
           postId: this.postId(),
-        })
-      ).then(() => {
-        this.postText = '';
-        this.created.emit();
-      });
+        }
+      }))
+      this.postText = ''
       return;
     }
-    firstValueFrom(
-      this.postService.createPost({
+    this.store.dispatch(postActions.createPost({
+      postContent: {
         title: 'Клёвый пост',
         content: this.postText,
         authorId: this.profile()!.id,
-      })
-    ).then(() => (this.postText = ''));
+      }
+    }))
+    this.postText = ''
+
   }
 }

@@ -14,13 +14,23 @@
 
 .message-text {
   padding: 8px 16px;
+  margin-bottom: 12px;
   background: var(--message-color);
   font-weight: 500;
   color: var(--light-color);
   width: min-content;
   mask: linear-gradient(#000 0 0),
-    linear-gradient(135deg, #000 50%, #0000 0) border-box 100% 100% / 200% 200%
-      no-repeat;
+  linear-gradient(135deg, #000 50%, #0000 0) border-box 100% 100% / 200% 200%
+  no-repeat;
   mask-composite: exclude;
-  mask-position: 70% 94%;
+  mask-position: 90% 94%;
+}
+
+:host.is-mine .message-text {
+  background: purple;
+  mask: linear-gradient(#000 0 0),
+  linear-gradient(-45deg, #000 50%, #0000 0) border-box 100% 100% / 200% 200%
+  no-repeat;
+  mask-composite: exclude;
+  mask-position: 10% 10%;
 }

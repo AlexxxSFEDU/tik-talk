@@ -1,6 +1,15 @@
-<div class="messages-wrapper">
-  @for (message of messages(); track message.id) {
-  <app-chat-workspace-message [message]="message"></app-chat-workspace-message>
-  }
+<div class="chat-container">
+  <div class="messages-wrapper">
+    @for (dateGroup of messages() | keyvalue; track dateGroup.key) {
+      <div class="date__wrapper">
+        <div class="date">
+        {{ dateGroup.key }}
+        </div>
+      </div>
+      @for (message of dateGroup.value; track message) {
+        <app-chat-workspace-message [message]="message"></app-chat-workspace-message>
+      }
+    }
+  </div>
 </div>
 <app-message-input (created)="onSendMessage($event)"></app-message-input>

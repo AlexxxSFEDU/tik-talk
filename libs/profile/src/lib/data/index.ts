@@ -1,8 +1,6 @@
-import { Profile } from "../../../../interfaces/src/lib/profile/profile.interface";
-import { ProfileService } from "./services/profile.service";
+import { Profile } from "../../../../data-access/src/lib/data/interfaces/profile.interface";
 export * from './store'
 
 export {
-  ProfileService,
   Profile
 }

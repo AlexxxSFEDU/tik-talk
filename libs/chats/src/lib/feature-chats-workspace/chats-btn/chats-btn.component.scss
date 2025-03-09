@@ -27,3 +27,13 @@
 .chat-user {
   color: var(--light-transparent-color);
 }
+
+.medium-text
+{
+  display: flex;
+  justify-content: space-between;
+  .messages-count
+  {
+    color: var(--primary-color)
+  }
+}

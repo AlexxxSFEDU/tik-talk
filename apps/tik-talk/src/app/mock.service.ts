@@ -45,4 +45,12 @@ export class MockService {
       },
     ]);
   }
+  getStack()
+  {
+    return of([
+      'ANGULAR',
+      'JS',
+      'FORMS'
+    ])
+  }
 }

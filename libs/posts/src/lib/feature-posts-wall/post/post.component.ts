@@ -1,11 +1,10 @@
-import { Component, inject, input, OnInit, signal } from '@angular/core';
-
-import { DatePipe } from '@angular/common';
-
-import {PostInputComponent, CommentComponent} from "../../ui";
-import { firstValueFrom } from 'rxjs';
-import {Post, PostComment, PostService} from "../../data";
+import {ChangeDetectionStrategy, Component, inject, input} from '@angular/core';
+import {DatePipe} from '@angular/common';
+import {CommentComponent, PostInputComponent} from "../../ui";
+import {Post} from "../../data";
 import {AvatarCircleComponent, CreatedAtPipe, SvgComponent} from "@tt/common-ui";
+import {Store} from "@ngrx/store";
+import {postActions} from "../../data/store";
 
 @Component({
   selector: 'app-post',
@@ -20,21 +19,13 @@ import {AvatarCircleComponent, CreatedAtPipe, SvgComponent} from "@tt/common-ui"
   ],
   templateUrl: './post.component.html',
   styleUrl: './post.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PostComponent implements OnInit {
+export class PostComponent {
+  store = inject(Store)
   post = input<Post>();
-  comments = signal<PostComment[]>([]);
-  postService = inject(PostService);
-
-  async ngOnInit() {
-    this.comments.set(this.post()!.comments);
-  }
 
   async onCreated() {
-    const comments = await firstValueFrom(
-      this.postService.getCommentsByPostId(this.post()!.id)
-    );
-    //@ts-ignore
-    this.comments.set(comments);
+    this.store.dispatch(postActions.fetchPosts({}))
   }
 }

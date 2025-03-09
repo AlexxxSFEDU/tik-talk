@@ -3,3 +3,9 @@
   grid-gap: 16px;
   overflow-y: scroll;
 }
+.input-wrapper
+{
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}

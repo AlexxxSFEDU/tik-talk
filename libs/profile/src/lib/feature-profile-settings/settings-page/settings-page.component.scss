@@ -29,3 +29,22 @@
 }
 .profile-input {
 }
+
+.logout-btn {
+  svg {
+    width: 43px;
+    height: 43px;
+    color: var(--primary-color);
+  }
+  &:hover,
+  &:focus-visible {
+    svg {
+      color: var(--light-color);
+    }
+  }
+}
+
+.btn__wrapper
+{
+  display: flex;
+}

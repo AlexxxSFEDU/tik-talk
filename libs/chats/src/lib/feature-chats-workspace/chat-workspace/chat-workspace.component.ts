@@ -1,12 +1,14 @@
-import { Component, inject } from '@angular/core';
-import { ChatWorkspaceHeaderComponent } from './chat-workspace-header/chat-workspace-header.component';
-import { ChatWorkspaceMessagesWrapperComponent } from './chat-workspace-messages-wrapper/chat-workspace-messages-wrapper.component';
+import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
+import {ChatWorkspaceHeaderComponent} from './chat-workspace-header/chat-workspace-header.component';
+import {
+  ChatWorkspaceMessagesWrapperComponent
+} from './chat-workspace-messages-wrapper/chat-workspace-messages-wrapper.component';
 import {ActivatedRoute, Router} from '@angular/router';
 
 import {filter, of, switchMap} from 'rxjs';
-import { AsyncPipe } from '@angular/common';
-import { ChatService } from '../../data';
-import { MessageInputComponent } from '../../ui/message-input/message-input.component';
+import {AsyncPipe} from '@angular/common';
+import {MessageInputComponent} from '../../ui/message-input/message-input.component';
+import {ChatService} from "@tt/data-access";
 
 @Component({
   selector: 'app-chat-workspace',
@@ -19,6 +21,7 @@ import { MessageInputComponent } from '../../ui/message-input/message-input.comp
   ],
   templateUrl: './chat-workspace.component.html',
   styleUrl: './chat-workspace.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ChatWorkspaceComponent {
   route = inject(ActivatedRoute);
@@ -33,8 +36,7 @@ export class ChatWorkspaceComponent {
           filter(({id}) => id),
           switchMap(({userId}) => {
             return this.chatService.createChat(userId).pipe(
-              switchMap(chat =>
-              {
+              switchMap(chat => {
                 this.router.navigate(['chats', chat.id])
                 return of(null)
               })

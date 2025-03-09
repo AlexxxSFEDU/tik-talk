@@ -1,7 +1,6 @@
 
 import { FormsExperimentComponent } from './experimental/forms-experiment/forms-experiment.component';
-import {profilesFilter, SettingsPageComponent} from "@tt/profile";
-import { canActivateAuth } from '@tt/auth';
+import { SettingsPageComponent} from "@tt/profile";
 import {LoginPageComponent} from "@tt/auth";
 import {Routes} from "@angular/router";
 import {ProfilePageComponent, SearchPageComponent} from "@tt/profile";
@@ -11,6 +10,8 @@ import {profileFeature} from "@tt/profile";
 import {provideState} from "@ngrx/store";
 import {provideEffects} from "@ngrx/effects";
 import {ProfileEffects} from "@tt/profile";
+import {canActivateAuth} from "@tt/data-access";
+import {PostEffects, postFeature} from "../../../../libs/posts/src/lib/data/store";
 
 export const routes: Routes = [
   {
@@ -25,6 +26,10 @@ export const routes: Routes = [
       {
         path: 'profile/:id',
         component: ProfilePageComponent,
+        providers: [
+          provideState(postFeature),
+          provideEffects(PostEffects)
+        ]
       },
       {
         path: 'settings',

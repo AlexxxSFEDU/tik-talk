@@ -12,6 +12,8 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Feature, MockService } from '../../mock.service';
 import { KeyValuePipe } from '@angular/common';
+import {AddressInputComponent} from "@tt/common-ui";
+import {tap} from "rxjs";
 
 enum ReceiverType {
   PERSON = 'PERSON',
@@ -70,7 +72,7 @@ function validateDateRange({
 @Component({
   selector: 'app-forms-experiment',
   standalone: true,
-  imports: [ReactiveFormsModule, KeyValuePipe],
+  imports: [ReactiveFormsModule, KeyValuePipe, AddressInputComponent],
   templateUrl: './forms-experiment.component.html',
   styleUrl: './forms-experiment.component.scss',
 })
@@ -85,6 +87,7 @@ export class FormsExperimentComponent {
       validateStartWith('Я'),
     ]),
     lastName: new FormControl<string>('', Validators.required),
+    city: new FormControl<string>('', Validators.required),
     inn: new FormControl<string>('', [
       Validators.required,
       Validators.minLength(10),
@@ -129,7 +132,6 @@ export class FormsExperimentComponent {
     this.form.controls.type.valueChanges
       .pipe(takeUntilDestroyed())
       .subscribe((value) => {
-        console.log(value);
         this.form.controls.inn.clearValidators();
         if (value === ReceiverType.LEGAL) {
           this.form.controls.inn.setValidators([
@@ -138,14 +140,8 @@ export class FormsExperimentComponent {
             Validators.maxLength(10),
           ]);
         }
+        this.form.controls.inn.updateValueAndValidity();
       });
-
-    const formPatch = {
-      name: 'Alexey',
-      lastName: 'Dynamo',
-    };
-
-    this.form.patchValue(formPatch);
   }
 
   onSubmit() {

@@ -1,34 +1,33 @@
-import { Component, effect, inject, ViewChild } from '@angular/core';
-import { ProfileHeaderComponent } from '../../ui/profile-header/profile-header.component';
-import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { ProfileService } from '@tt/profile';
-import { firstValueFrom } from 'rxjs';
-import { AvatarUploadComponent } from '../../ui/avatar-upload/avatar-upload.component';
+import {ChangeDetectionStrategy, Component, effect, inject, ViewChild} from '@angular/core';
+import {FormBuilder, ReactiveFormsModule, Validators,} from '@angular/forms';
+import {firstValueFrom} from 'rxjs';
+import {ProfileService} from '../../../../../data-access/src/lib/data/services/profile.service';
+import {AvatarUploadComponent, ProfileHeaderComponent} from "../../ui";
+import {AddressInputComponent, StackInputComponent, SvgComponent} from "@tt/common-ui";
+import {AuthService} from "@tt/data-access";
 
 @Component({
   selector: 'app-settings-page',
   standalone: true,
-  imports: [ProfileHeaderComponent, ReactiveFormsModule, AvatarUploadComponent],
+  imports: [ProfileHeaderComponent, ReactiveFormsModule, AvatarUploadComponent, StackInputComponent, AddressInputComponent, SvgComponent],
   templateUrl: './settings-page.component.html',
   styleUrl: './settings-page.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SettingsPageComponent {
   fb = inject(FormBuilder);
   profileService = inject(ProfileService);
+  authService = inject(AuthService)
 
   @ViewChild(AvatarUploadComponent) avatarUploader: any;
 
   form = this.fb.group({
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
-    username: [{ value: '', disabled: true }, Validators.required],
+    username: [{value: '', disabled: true}, Validators.required],
     description: [''],
     stack: [''],
+    city: ['']
   });
 
   constructor() {
@@ -36,7 +35,6 @@ export class SettingsPageComponent {
       //@ts-ignore
       this.form.patchValue({
         ...this.profileService.me(),
-        stack: this.mergeStack(this.profileService.me()!.stack),
       });
     });
   }
@@ -44,7 +42,9 @@ export class SettingsPageComponent {
   onSave() {
     this.form.markAllAsTouched();
     this.form.updateValueAndValidity();
+
     if (this.form.invalid) return;
+
     if (this.avatarUploader.avatar) {
       firstValueFrom(
         this.profileService.uploadAvatar(this.avatarUploader.avatar)
@@ -53,19 +53,12 @@ export class SettingsPageComponent {
     firstValueFrom(
       //@ts-ignore
       this.profileService.patchProfile({
-        ...this.form.value,
-        stack: this.splitStack(this.form.value.stack),
+        ...this.form.value
       })
     );
   }
-  splitStack(stack: string | null | string[] | undefined): string[] {
-    if (!stack) return [];
-    if (Array.isArray(stack)) return stack;
-    return stack.split(',');
-  }
-  mergeStack(stack: string | null | string[] | undefined) {
-    if (!stack) return '';
-    if (Array.isArray(stack)) return stack.join(',');
-    return stack;
+
+  logout() {
+    this.authService.logout()
   }
 }

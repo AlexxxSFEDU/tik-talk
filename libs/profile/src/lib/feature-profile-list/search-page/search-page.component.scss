@@ -1,8 +1,16 @@
 :host {
   display: grid;
   grid-gap: 20px;
+  height: calc(100vh - 50px);
+  overflow: auto;
 }
 .profile-card__wrapper {
   display: grid;
   grid-gap: 8px;
+}
+.filters__wrapper
+{
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }

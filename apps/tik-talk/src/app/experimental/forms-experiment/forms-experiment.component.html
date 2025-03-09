@@ -1,4 +1,4 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
+<form [formGroup]="form">
   <h2>Информация о получателе</h2>
   <label class="tt-control-label mb16">
     Тип получателя
@@ -18,7 +18,7 @@
     />
   </label>
 
-  @if (form.controls.name.touched && form.controls.name.hasError('startWith')){
+  @if (form.controls.name.touched && form.controls.name.hasError('startsWith')){
   <small>{{ form.controls.name.getError('startWith') }}</small>
   } @if (form.controls.name.touched && form.controls.name.hasError('required')){
   <span style="color: red">Это поле обязательно!</span>
@@ -42,6 +42,14 @@
       formControlName="lastName"
     />
   </label>
+  }
+
+  <label class="tt-control-label mb16">
+    Город получателя
+    <tt-address-input formControlName="city"></tt-address-input>
+  </label>
+  @if (form.controls.city.touched && form.controls.city.hasError('required')){
+    <span style="color: red">Это поле обязательно!</span>
   }
 
   <div>
@@ -138,6 +146,6 @@
         }
       </div>
     </div>
-    <button class="btn btn-shadow" type="submit">Подтвердить</button>
+    <button class="btn btn-shadow" (click)="onSubmit()">Подтвердить</button>
   </div>
 </form>

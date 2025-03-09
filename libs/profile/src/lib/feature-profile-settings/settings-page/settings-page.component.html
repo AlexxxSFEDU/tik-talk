@@ -4,18 +4,18 @@
     <div class="two-columns">
       <label class="tt-form-label">
         <span class="tt-form-label__text">Имя</span>
-        <input type="text" class="tt-form-input" formControlName="firstName" />
+        <input type="text" class="tt-form-input" formControlName="firstName"/>
       </label>
 
       <label class="tt-form-label">
         <span class="tt-form-label__text">Фамилия</span>
-        <input type="text" class="tt-form-input" formControlName="lastName" />
+        <input type="text" class="tt-form-input" formControlName="lastName"/>
       </label>
     </div>
 
     <label class="tt-form-label">
       <span class="tt-form-label__text">Telegram username</span>
-      <input type="text" class="tt-form-input" formControlName="username" />
+      <input type="text" class="tt-form-input" formControlName="username"/>
     </label>
 
     <label class="tt-form-label">
@@ -32,14 +32,19 @@
       <app-avatar-upload></app-avatar-upload>
     </label>
 
+
+    <span class="tt-form-label__text">Навыки</span>
+    <tt-stack-input formControlName="stack"></tt-stack-input>
+
+
     <label class="tt-form-label">
-      <span class="tt-form-label__text">Навыки</span>
-      <input type="text" class="tt-form-input" formControlName="stack" />
+      <span class="tt-form-label__text">Город</span>
+      <tt-address-input formControlName="city"></tt-address-input>
     </label>
   </div>
-  <div>
-    <div>
-      <button class="btn" (click)="onSave()">Сохранить</button>
-    </div>
+
+  <div class="btn__wrapper">
+    <button class="btn" (click)="onSave()">Сохранить</button>
+    <button class="btn" (click)="logout()">Выйти</button>
   </div>
 </form>

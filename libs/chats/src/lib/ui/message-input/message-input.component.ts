@@ -11,7 +11,7 @@ import { AvatarCircleComponent } from '@tt/common-ui';
 import { FormsModule } from '@angular/forms';
 import { NgIf } from '@angular/common';
 import { SvgComponent } from '@tt/common-ui';
-import { ProfileService } from '@tt/profile';
+import {ProfileService} from "@tt/data-access";
 
 @Component({
   selector: 'app-message-input',

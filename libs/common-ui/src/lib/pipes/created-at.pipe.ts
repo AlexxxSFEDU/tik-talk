@@ -1,4 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import {addHours, formatDistanceToNow, parseISO} from 'date-fns';
+import { ru } from 'date-fns/locale';
 
 @Pipe({
   name: 'createdAt',
@@ -7,9 +9,12 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class CreatedAtPipe implements PipeTransform {
   transform(value: string | null): string | null {
     if (!value) return null;
-    const result = Math.floor(
-      (Date.now() - Date.parse(value) - 10800000) / 3600000
-    );
-    return `${result} часов назад`;
-  }
+    const date = parseISO(value);
+    const correctedDate = addHours(date, 3);
+    const result = formatDistanceToNow(correctedDate, {
+        addSuffix: true,
+        locale: ru,
+      });
+      return result;
+    }
 }

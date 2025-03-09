@@ -28,7 +28,8 @@
       "@tt/posts": ["libs/posts/src/index.ts"],
       "@tt/profile": ["libs/profile/src/index.ts"],
       "@tt/shared": ["libs/shared/src/index.ts"],
-      "a2": ["libs/a2/src/index.ts"]
+      "a2": ["libs/a2/src/index.ts"],
+      "@tt/data-access": ["libs/data-access/src/index.ts"]
     },
     "baseUrl": ".",
     "rootDir": "."
